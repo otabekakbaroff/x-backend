@@ -18,6 +18,7 @@ server.use('/api/users', users);
 
 server.use(express.static("public"));
 
+
 server.get('/', (req,res)=>{
     res.json({ Message:`*** SERVER IS UP AND RUNNING ***` })
 })
