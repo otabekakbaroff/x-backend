@@ -2,27 +2,18 @@ const router = require('express').Router();
 const Users = require('./users_model')
 const bcrypt=require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const restrict = require('../middleware/restrict')
 
 function generateToken(user){
 	const payload = {
 		username:user,
 	}
-	const secret = /*process.env.SECRET ||*/ "Tell no one"
+	const secret = process.env.JWT_SECRET
 
 	const options = {
-		expiresIn:'12h'
+		expiresIn:'8h'
 	}
 	return jwt.sign(payload,secret,options);
 }
-router.get('/all-users', restrict, (req,res) =>{
-    Users.getAllUsers().then(users =>{
-        res.json(users)
-    })
-    .catch(error=>{
-        console.log(error)
-    })
-})
 
 
 router.post('/register', (req, res) => {
@@ -50,6 +41,7 @@ router.post("/login", (req, res) => {
     Users.findUser({ username })
       .first()
       .then(user => {
+        console.log(user)
         if (user && bcrypt.compareSync(password,user.password)){
         const token=generateToken(user);
           res.status(200).json({
