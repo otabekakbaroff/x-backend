@@ -16,5 +16,7 @@ function searchUser(filter){
 function addUser(user) {
     return db('users')
       .insert(user)
-      .then(id => id);
+      .then(id =>{
+         return {username:user.username}
+      });
 }

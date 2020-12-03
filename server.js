@@ -10,6 +10,8 @@ const users=require('./users/users_router');
 
 const messages = require('./messages/messages_router')
 
+const connections = require('./connection/connection-router')
+
 server.use(express.json());
 
 server.use(cors());
@@ -19,6 +21,8 @@ server.use(helmet());
 server.use('/api/messages', messages);
 
 server.use('/api/users', users);
+
+server.use('/api/connections', connections);
 
 server.use(express.static("public"));
 

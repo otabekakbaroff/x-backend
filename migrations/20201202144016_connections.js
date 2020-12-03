@@ -1,9 +1,7 @@
 exports.up = function(knex) {
-    return knex.schema.createTable('messages', table =>{
+    return knex.schema.createTable('connection', table =>{
 
         table.increments();
-
-        table.string('message').notNullable()
 
         table
         .string("from") 
@@ -24,15 +22,16 @@ exports.up = function(knex) {
         .onDelete("CASCADE");
 
         table
-        .integer('date')
-        .notNullable()
-        .unique()
+        .integer('status')
+        .defaultTo(0)
 
+        table
+        .string('date')
+        
     })
   };
   
 exports.down = function(knex) {
-     return knex.schema.dropTableIfExists('messages');
+     return knex.schema.dropTableIfExists('connection');
 };
   
-
