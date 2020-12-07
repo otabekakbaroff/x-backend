@@ -1,14 +1,25 @@
 const router = require('express').Router();
 const Messages = require('./message_model')
-
+const Users = require('../users/users_model')
 
 
 router.post("/my-messages",(req,res)=>{
-    Messages.myMessages(req.body.from,req.body.to).then(messages=>{
-        res.json(messages)
-    })
-    .catch(error=>{
+    const {from, to} = req.body
+    Users.usersExist({username:[from]} ,{username:[to]}).then(user=>{
+        if(user.length === 2){
+            Messages.myMessages(from,to).then(message=>{
+                res.json(message)
+            })
+            .catch(error=>{
+                console.log(error)
+            })
+           
+        }else{
+            res.json({error_message:'one or both users not found'})
+        }
+    }).catch(error=>{
         console.log(error)
+        res.json({error:'error'})
     })
 })
 

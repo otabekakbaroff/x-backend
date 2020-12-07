@@ -20,6 +20,7 @@ io.on("connection", function(socket){
     console.log(`connected id: ${socket.id}`)
     //Login
     socket.on('user-info', function(data){
+        console.log(data)
         // let hash = crypto.createHash('md5').update(data).digest("hex")
         io.to(socket.id).emit('confirm', data)
         activeConnections.add(socket.id)
@@ -30,7 +31,7 @@ io.on("connection", function(socket){
 
     // Reconnection
     socket.on('reconnection',function(data){
-        console.log(`reconnection user: ${data}`)
+        console.log(`reconnecting user: ${data}`)
         userHash_socketId = {...userHash_socketId, [data]:socket.id}
     })
     if(!activeConnections.has(socket.id)){
@@ -51,6 +52,7 @@ io.on("connection", function(socket){
             })
             .catch(error=>{
                 console.log(error)
+                io.to(socket.id).emit('user-search','error')
             })
     })
 

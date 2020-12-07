@@ -4,7 +4,8 @@ const db = require('../db/dbconfig')
 module.exports = {
     friendsList,
     friendRequests,
-    send_friendRequest
+    send_friendRequest,
+    request_reply
 }
 
 
@@ -27,3 +28,11 @@ function friendRequests(user){
     .andWhere('connection.status', 0)
 }
 
+function request_reply(id,reply) {
+    return db("connection")
+      .where({id})
+      .update(reply)
+      .then(result=>{
+          
+      })
+}

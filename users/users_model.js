@@ -4,12 +4,23 @@ const db = require('../db/dbconfig')
 module.exports = {
 	findUser,
   addUser,
-  searchUser
+  searchUser,
+  usersExist
 }
 
 function findUser(filter){
 	return  db('users').where(filter);
 }
+
+function usersExist(from,to){
+  return db('users')
+  .where(from)
+  .orWhere(to)
+  
+}
+
+
+
 function searchUser(filter){
 	return  db('users').where('users.username',"like", `${filter}%`);
 }

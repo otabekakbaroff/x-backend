@@ -3,11 +3,12 @@ const Users = require('./users_model')
 const bcrypt=require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
+
 function generateToken(user){
 	const payload = {
 		username:user,
 	}
-	const secret = process.env.JWT_SECRET
+	const secret = process.env.JWT_SECRET;
 
 	const options = {
 		expiresIn:'8h'
@@ -18,9 +19,11 @@ function generateToken(user){
 
 router.post('/register', (req, res) => {
     const usersInfo = req.body;
-    const hash=bcrypt.hashSync(usersInfo.password, 12);
-    usersInfo.password=hash;
-    if (usersInfo.username && usersInfo.password ){
+    if(usersInfo.username.length < 6 || usersInfo.password.length < 6 || name.length < 3){
+        res.json({error_message:'username, password minimum of 6 characters and name minimum of 3 characters'})
+    }else{
+        const hash=bcrypt.hashSync(usersInfo.password, 12);
+        usersInfo.password=hash;
         Users.addUser(usersInfo).then(user=>{
             const token=generateToken(user);
             res.status(201).json({ 
@@ -29,10 +32,8 @@ router.post('/register', (req, res) => {
             });
         }).catch(err=>{
             console.log(err);
-            res.status(500).json({errorMessage:'Post Failed'})
-        })
-    }else{
-        res.json({errorMessage: 'Make sure to have username, name, password '})
+            res.status(500).json({error_message:'Post Failed'})
+        })  
     }
 });
 
@@ -42,7 +43,6 @@ router.post("/login", (req, res) => {
     Users.findUser({ username })
       .first()
       .then(user => {
-        console.log(user)
         if (user && bcrypt.compareSync(password,user.password)){
         const token=generateToken(user);
           res.status(200).json({
@@ -51,12 +51,12 @@ router.post("/login", (req, res) => {
           });
         }
         else{
-            res.status(401).json({errorMessage: 'Invalid Credentials'})
+            res.status(401).json({error_message: 'Invalid Credentials'})
         }
       })
       .catch(error => {
         console.log(error);
-        res.status(500).json({errorMessage:'Invalid Credentials'});
+        res.status(500).json({error_message:'Invalid Credentials'});
       });
 });
 
