@@ -19,7 +19,7 @@ function generateToken(user){
 
 router.post('/register', (req, res) => {
     const usersInfo = req.body;
-    if(usersInfo.username.length < 6 || usersInfo.password.length < 6 || name.length < 3){
+    if(usersInfo.username.length < 6 || usersInfo.password.length < 6 || userInfo.name.length < 3){
         res.json({error_message:'username, password minimum of 6 characters and name minimum of 3 characters'})
     }else{
         const hash=bcrypt.hashSync(usersInfo.password, 12);
