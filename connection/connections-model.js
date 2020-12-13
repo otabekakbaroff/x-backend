@@ -5,13 +5,21 @@ module.exports = {
     friendsList,
     friendRequests,
     send_friendRequest,
-    request_reply
+    request_reply,
+    checkFriendship
 }
 
 
 function friendsList(user){
     return db('connection')
     .where('connection.to', user)
+    .andWhere('connection.status', 2)
+    .select('connection.from as username' )
+}
+function checkFriendship(userOne,userTwo){
+    return db('connection')
+    .where('connection.from', userOne)
+    .andWhere('connection.to',userTwo)
     .andWhere('connection.status', 2)
 }
 

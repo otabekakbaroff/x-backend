@@ -3,6 +3,24 @@ const Connections = require('./connections-model');
 const Users = require('../users/users_model')
 
 
+
+router.post('/check-friendship', (req,res)=>{
+    const {userOne,userTwo} = req.body
+    console.log(userOne,userTwo)
+    Connections.checkFriendship(userOne,userTwo).then(user=>{
+        if(user.length !==0){
+            res.json({Confirm: true})
+        }else{
+            res.json({Reject: false})
+        }
+    })
+    .catch(error=>{
+        console.log(error)
+    })
+})
+
+
+
 // get all friends 
 router.get('/:username/friends-list', (req,res)=>{
     const {username} = req.params

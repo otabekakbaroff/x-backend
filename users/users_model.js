@@ -22,8 +22,11 @@ function usersExist(from,to){
 
 
 function searchUser(filter){
-	return  db('users').where('users.username',"like", `${filter}%`);
+  return  db('users')
+  .where('users.username',"like", `${filter}%`)
+  .select('users.username');
 }
+
 function addUser(user) {
     return db('users')
       .insert(user)
