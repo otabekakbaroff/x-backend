@@ -16,6 +16,7 @@ function friendsList(user){
     .andWhere('connection.status', 2)
     .select('connection.from as username' )
 }
+
 function checkFriendship(userOne,userTwo){
     return db('connection')
     .where('connection.from', userOne)
@@ -42,5 +43,5 @@ function request_reply(id,reply) {
       .update(reply)
       .then(result=>{
           
-      })
+    })
 }

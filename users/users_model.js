@@ -5,7 +5,8 @@ module.exports = {
 	findUser,
   addUser,
   searchUser,
-  usersExist
+  usersExist,
+  update_user
 }
 
 function findUser(filter){
@@ -32,5 +33,15 @@ function addUser(user) {
       .insert(user)
       .then(id =>{
          return {username:user.username}
-      });
+    });
+}
+
+
+function update_user(username,chatted_last) {
+  return db("users")
+    .where({username})
+    .update({chatted_last})
+    .then(result=>{
+        return {success:'pass'}
+  })
 }

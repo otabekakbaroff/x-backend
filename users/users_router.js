@@ -37,7 +37,6 @@ router.post('/register', (req, res) => {
     }
 });
 
-
 router.post("/login", (req, res) => {
     let { username, password } = req.body;
     Users.findUser({ username })
@@ -61,5 +60,16 @@ router.post("/login", (req, res) => {
 });
 
 
+router.put("/last-convo",(req,res)=>{
+    let { username, chatted_last } = req.body;
+    console.log(username,chatted_last)
+    Users.update_user(username, chatted_last)
+    .then(user=>{
+        res.json({success:'pass'})
+    }).catch(error=>{
+        console.log(error)
+        res.json({error:'failed'})
+    })
+})
   
 module.exports = router;
